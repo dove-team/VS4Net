@@ -21,38 +21,29 @@ namespace VS4Net
                 var match = regex.Match(item.ToString());
                 var link = $"Microsoft.NETFramework.ReferenceAssemblies.net{match.Value.Replace(".", "")}";
                 DownoadManager.Instance.Add(link);
-            } 
-            if(DownoadManager.Instance.Count()==0)
-            {
-                MessageBox.Show("Please select item!");
-                return;
             }
-            MainForm.setEnable(false);
-            self.textBoxMsg.Clear();
-            DownoadManager.Instance.Start();
+            if (DownoadManager.Instance.Count == 0)
+                MessageBox.Show("Please select item!");
+            else
+            {
+                MainForm.SetEnable(false);
+                self.textBoxMsg.Clear();
+                DownoadManager.Instance.Start();
+            }
         }
-
-        public static void setEnable( bool enable)
+        public static void SetEnable(bool enable)
         {
             self.Invoke(new MethodInvoker(delegate ()
             {
                 self.buttonStart.Enabled = enable;
                 self.checkedListBoxVersion.Enabled = enable;
                 self.btn_checkall.Enabled = enable;
-                if (enable)
-                {
-                    self.buttonStart.Text = "Start";
-                }
-                else
-                {
-                    self.buttonStart.Text = "Running";
-                } 
+                self.buttonStart.Text = enable ? "Start" : "Running";
             }));
         }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(DownoadManager.Instance.Running)
+            if (DownoadManager.Instance.Running)
             {
                 if (MessageBox.Show("Task Still Running, Are You Sure to Cancel?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -61,10 +52,8 @@ namespace VS4Net
                 }
                 else
                     e.Cancel = true;
-            } 
-
+            }
         }
-
         public static void Log(string log)
         {
             try
@@ -77,13 +66,10 @@ namespace VS4Net
             }
             catch { }
         }
-
         private void btn_checkall_Click(object sender, EventArgs e)
         {
-            for(int i=0;i<checkedListBoxVersion.Items.Count;i++)
-            {
-                checkedListBoxVersion.SetItemChecked(i,true);
-            } 
+            for (int i = 0; i < checkedListBoxVersion.Items.Count; i++)
+                checkedListBoxVersion.SetItemChecked(i, true);
         }
     }
 }

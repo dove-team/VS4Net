@@ -42,6 +42,7 @@
             // 
             this.checkedListBoxVersion.FormattingEnabled = true;
             this.checkedListBoxVersion.Items.AddRange(new object[] {
+            ".Net Framework 3.5",
             ".Net Framework 4.0",
             ".Net Framework 4.5",
             ".Net Framework 4.5.1",
