@@ -46,7 +46,15 @@
             ".Net Framework 4.0",
             ".Net Framework 4.5",
             ".Net Framework 4.5.1",
-            ".Net Framework 4.5.2"});
+            ".Net Framework 4.5.2",
+            ".Net Framework 4.6",
+            ".Net Framework 4.6.1",
+            ".Net Framework 4.6.2",
+            ".Net Framework 4.7",
+            ".Net Framework 4.7.1",
+            ".Net Framework 4.7.2",
+            ".Net Framework 4.8",
+            ".Net Framework 4.8.1"});
             this.checkedListBoxVersion.Location = new System.Drawing.Point(141, 22);
             this.checkedListBoxVersion.Name = "checkedListBoxVersion";
             this.checkedListBoxVersion.Size = new System.Drawing.Size(248, 84);

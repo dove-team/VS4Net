@@ -76,38 +76,45 @@ namespace VS4Net
             foreach (var file in files)
             {
                 MainForm.Log("Unzipping " + file);
-                using (ZipInputStream s = new ZipInputStream(File.OpenRead(file)))
+                try
                 {
-                    ZipEntry theEntry;
-                    while ((theEntry = s.GetNextEntry()) != null)
+                    using (ZipInputStream s = new ZipInputStream(File.OpenRead(file)))
                     {
-                        string directoryName = Path.GetDirectoryName(theEntry.Name),
-                            sourceDir = directoryName.Replace("build\\.NETFramework", ""),
-                            fileName = theEntry.Name.Replace("build/.NETFramework", "");
-                        if (directoryName.StartsWith("build\\.NETFramework\\v4"))
+                        ZipEntry theEntry;
+                        while ((theEntry = s.GetNextEntry()) != null)
                         {
-                            if (directoryName.Length > 0)
-                                Directory.CreateDirectory($"{TARGET_ROOT_DIR}\\{sourceDir}");
-                            if (fileName != string.Empty)
+                            string directoryName = Path.GetDirectoryName(theEntry.Name),
+                                sourceDir = directoryName.Replace("build\\.NETFramework", ""),
+                                fileName = theEntry.Name.Replace("build/.NETFramework", "");
+                            if (directoryName.StartsWith("build\\.NETFramework\\v4"))
                             {
-                                using (var streamWriter = File.Create($"{TARGET_ROOT_DIR}\\{fileName}"))
+                                if (directoryName.Length > 0)
+                                    Directory.CreateDirectory($"{TARGET_ROOT_DIR}\\{sourceDir}");
+                                if (fileName != string.Empty)
                                 {
-                                    int size = 2048;
-                                    byte[] data = new byte[2048];
-                                    while (true)
+                                    using (var streamWriter = File.Create($"{TARGET_ROOT_DIR}\\{fileName}"))
                                     {
-                                        size = s.Read(data, 0, data.Length);
-                                        if (size > 0)
-                                            streamWriter.Write(data, 0, size);
-                                        else
-                                            break;
+                                        int size = 2048;
+                                        byte[] data = new byte[2048];
+                                        while (true)
+                                        {
+                                            size = s.Read(data, 0, data.Length);
+                                            if (size > 0)
+                                                streamWriter.Write(data, 0, size);
+                                            else
+                                                break;
+                                        }
                                     }
                                 }
                             }
+                            if (!Running) return;
                         }
-                        if (!Running) return;
                     }
                 }
+                catch (Exception ex)
+                {
+                    MainForm.Log("unzip error:"+ex.Message);
+                } 
                 Thread.Sleep(200);
                 MainForm.Log("delete origin file");
                 File.Delete(file);
